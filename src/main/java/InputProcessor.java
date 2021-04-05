@@ -18,9 +18,7 @@ public class InputProcessor {
 
             final FioGenerator fioGenerator = new FioGenerator();
             fioGenerator.generateParams(intCode);
-            final String lastName = fioGenerator.getLastName();
-            final String firstName = fioGenerator.getFirstName();
-            final String middleName = fioGenerator.getMiddleName();
+            final String fullName = fioGenerator.getFullName();
 
             final PhysGenerator physGenerator = new PhysGenerator();
             physGenerator.generateParams(intCode);
@@ -39,7 +37,7 @@ public class InputProcessor {
             }
 
             result = new Person(input,
-                    lastName, firstName, middleName,
+                    fullName,
                     physical,
                     appearance,
                     phone).toString();

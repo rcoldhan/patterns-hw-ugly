@@ -5,9 +5,7 @@ import static utils.MyMath.getDigitsSum;
 
 public class FioGenerator {
 
-    private String lastName;
-    private String firstName;
-    private String middleName;
+    private String fullName;
 
     /**
      * ФИО берутся из соответствующих файлов по индексу в листе:
@@ -20,33 +18,16 @@ public class FioGenerator {
     public final void generateParams(final int code) {
         final int lastNameIndex = getDigitsSum(code);
         final String sex = (lastNameIndex % 2 == 0) ? "f" : "m";
-        setLastNameFromFile(lastNameIndex, sex);
-        setFirstNameFromFile(getDigitsSum(code / 100), sex);
-        setMiddleNameFromFile(getDigitsSum(code % 100), sex);
+        setFullNameFromFile(lastNameIndex, getDigitsSum(code / 100), getDigitsSum(code % 100), sex);
     }
 
-    public final String getLastName() {
-        return lastName;
+    public final String getFullName() {
+        return fullName;
     }
 
-    public final String getFirstName() {
-        return firstName;
-    }
-
-    public final String getMiddleName() {
-        return middleName;
-    }
-
-    private void setLastNameFromFile(final int i, final String sex) {
-        lastName = getLinesFromFile("lastNames_" + sex).get(i);
-    }
-
-    private void setFirstNameFromFile(final int i, final String sex) {
-        firstName = getLinesFromFile("names_" + sex).get(i);
-    }
-
-    private void setMiddleNameFromFile(final int i, final String sex) {
-        middleName = getLinesFromFile("middleNames_" + sex).get(i);
+    private void setFullNameFromFile(final int i, final int j, final int k, final String sex) {
+        fullName = getLinesFromFile("lastNames_" + sex).get(i)
+                + " " + getLinesFromFile("names_" + sex).get(j)
+                + " " + getLinesFromFile("middleNames_" + sex).get(k);
     }
 }
-

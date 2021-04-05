@@ -1,11 +1,7 @@
 package generators;
 
 import person.appearance.Appearance;
-import person.appearance.EyesColor;
 import person.appearance.hair.Hair;
-import person.appearance.hair.LongHair;
-import person.appearance.hair.NoHair;
-import person.appearance.hair.ShortHair;
 
 import java.util.HashMap;
 
@@ -24,25 +20,15 @@ public class AppearanceGenerator implements Generator<Appearance> {
     @Override
     public final void generateParams(final int code) {
         final int i = code % 100 / 10;
-        switch (i / 2) {
-            case 0:
-                eyes = EyesColor.BLUE;
-                break;
-            case 1:
-                eyes = EyesColor.GREEN;
-                break;
-            case 2:
-                eyes = EyesColor.BROWN;
-                break;
-            case 3:
-                eyes = EyesColor.GRAY;
-                break;
-            case 4:
-                eyes = EyesColor.DIFF;
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + i / 2);
-        }
+
+        final HashMap<Integer, String> eyesColorMap = new HashMap<>() {{
+            put(0, "голубые");
+            put(1, "зелёные");
+            put(2, "карие");
+            put(3, "серые");
+            put(4, "разные");
+        }};
+        eyes = eyesColorMap.get(i / 2);
         hairLength = i;
 
         final HashMap<Integer, String> hairColorMap = new HashMap<>() {{
@@ -65,11 +51,14 @@ public class AppearanceGenerator implements Generator<Appearance> {
     public final Appearance buildResponse() {
         Hair hair;
         if (hairLength > 0) {
-            hair = (hairLength > 4) ? new LongHair(hairColor) : new ShortHair(hairColor);
+            if (hairLength > 4) {
+                hair = new Hair("длинные, ", hairColor);
+            } else {
+                hair = new Hair("короткие, ", hairColor);
+            }
         } else {
-            hair = new NoHair();
+            hair = new Hair("нет", "");
         }
         return new Appearance(eyes, hair);
     }
 }
-
